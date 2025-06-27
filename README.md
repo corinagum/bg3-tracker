@@ -1,5 +1,7 @@
 # BG3 tracker
 
+I want to track my Baldur's Gate 3 achievements my way.
+
 ## License
 
 [!WARNING]
