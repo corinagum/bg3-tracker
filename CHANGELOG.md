@@ -4,3 +4,10 @@
 
 - Init project
 - Non-license
+- Add README.md
+- Init Vite
+- Basic `index.html`
+- prettier
+- eslint
+- tsconfig
+- import order `eslint` custom rules
