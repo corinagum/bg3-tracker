@@ -11,3 +11,8 @@
 - eslint
 - tsconfig
 - import order `eslint` custom rules
+
+- Fetch achievements script
+- Download images from achievements page
+- Tests xD
+- Fix commonjs discrepancies

@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import * as tseslint from 'typescript-eslint';
-import orderImports from './eslint-rules/import-order.js';
+import importOrder from './eslint-rules/import-order.js';
 
 export default tseslint.config({
   root: true,
@@ -17,6 +17,6 @@ export default tseslint.config({
     'import/no-commonjs': 'error',
     'prettier/prettier': 'error',
     'no-console': 'warn',
-    'import-order': orderImports,
+    'import-order': importOrder,
   }
 });

@@ -1,21 +1,28 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 import { configDefaults } from "vitest/config";
+import { resolve } from "path";
 
 export default defineConfig({
-  root: "src",
   build: {
-    outDir: "dist"
+    outDir: resolve(__dirname, "dist"),
+    emptyOutDir: true
+  },
+  publicDir: resolve(__dirname, "public"),
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src")
+    }
   },
   test: {
     globals: true,
     environment: 'jsdom',
     exclude: [...configDefaults.exclude, '**/node_modules/**'],
-    include: ['**/*.test.ts', '**/*.spec.ts'],
+    include: ['**/*.test.ts', '**/*.test.js', '**/*.spec.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      exclude: ['**/node_modules/**', '**/dist/**', '**/*.test.ts', '**/*.spec.ts']
+      exclude: ['**/node_modules/**', '**/dist/**', '**/*.test.ts', '**/*.test.js', '**/*.spec.ts']
     }
   }
 });

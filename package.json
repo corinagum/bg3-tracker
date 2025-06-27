@@ -26,7 +26,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "fetch-achievements": "node src/utils/fetch-achievements.mjs"
+    "fetch-achievements": "node src/utils/fetch-achievements.js"
   },
   "devDependencies": {
     "@types/node": "^24.0.4",
