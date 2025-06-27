@@ -17,7 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/corinagum/bg3-tracker.git"
   },
-  "license": "ISC",
   "author": "corinagum",
   "type": "module",
   "main": "dist/index.js",
@@ -30,21 +29,26 @@
     "check:types": "tsc --noEmit",
     "clean:test-output": "rm -rf test-output",
     "dev": "vite",
-    "fetch-achievements": "tsx src/utils/fetch-achievements.ts",
+    "dev:server": "tsx backend/server.ts",
+    "fetch-achievements": "tsx scripts/fetch-achievements.ts",
+    "fetch-steam": "tsx scripts/fetch-steam-achievements.ts",
     "fmt": "eslint --fix --ext .js,.ts,.tsx .",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "postinstall": "npm run check:all",
     "prepublishOnly": "npm run check:all",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage && vitest run src/utils/fetch-achievements-integration.test.ts --no-isolate --coverage",
-    "test:integration": "vitest run src/utils/fetch-achievements-integration.test.ts --no-isolate",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run scripts/fetch-achievements-integration.test.ts --no-isolate",
     "test:all": "npm run test && npm run test:integration",
     "test:ui": "vitest --ui",
     "test:watch": "vitest run"
   },
   "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.0",
     "@types/node": "^24.0.4",
+    "@types/passport": "^1.0.16",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
     "@vitest/coverage-v8": "^3.2.4",
@@ -58,6 +62,10 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.0",
+    "passport": "^0.7.0",
+    "passport-steam": "^1.0.18",
     "puppeteer": "^24.10.2"
   }
 }
