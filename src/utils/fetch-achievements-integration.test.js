@@ -70,8 +70,8 @@ afterEach(() => {
   // Clean up test files more carefully
   if (fs.existsSync(testDir)) {
     try {
-      const files = fs.readdirSync(testDir);
-      for (const file of files) {
+    const files = fs.readdirSync(testDir);
+    for (const file of files) {
         const filePath = path.join(testDir, file);
         const stat = fs.statSync(filePath);
         if (stat.isDirectory()) {

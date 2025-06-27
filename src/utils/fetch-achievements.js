@@ -1,3 +1,5 @@
+console.log('Starting fetch-achievements.js');
+
 import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
@@ -321,7 +323,7 @@ export async function fetchAchievements(options = {}) {
 }
 
 // If you want to run this as a script directly
-if (import.meta.url === import.meta.main) {
+if (process.argv[1] === __filename) {
   const args = process.argv.slice(2);
   const shouldRetry = args.includes('--retry');
 
