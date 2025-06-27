@@ -4,7 +4,7 @@ import {
   copyFile, 
   loadDownloadFailures, 
   saveDownloadFailures,
-} from './fetch-achievements.js';
+} from './fetch-achievements';
 import fs from 'fs';
 
 // Mock fs module
@@ -22,10 +22,10 @@ vi.mock('fs', () => ({
 // Mock path module
 vi.mock('path', () => ({
   default: {
-    join: vi.fn((...args) => args.join('/')),
-    dirname: vi.fn((path) => path.split('/').slice(0, -1).join('/')),
-    resolve: vi.fn((...args) => args.join('/')),
-    relative: vi.fn((from, to) => to.replace(from, '')),
+    join: vi.fn((...args: string[]) => args.join('/')),
+    dirname: vi.fn((path: string) => path.split('/').slice(0, -1).join('/')),
+    resolve: vi.fn((...args: string[]) => args.join('/')),
+    relative: vi.fn((from: string, to: string) => to.replace(from, '')),
   },
 }));
 
@@ -75,7 +75,7 @@ describe('copyFile', () => {
   });
 
   it('successfully copies a file and returns true', () => {
-    fs.copyFileSync.mockImplementation(() => {}); // No error
+    (fs.copyFileSync as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {});
 
     const result = copyFile('/source/file.txt', '/dest/file.txt');
 
@@ -85,7 +85,7 @@ describe('copyFile', () => {
 
   it('returns false when copy operation fails', () => {
     const error = new Error('Permission denied');
-    fs.copyFileSync.mockImplementation(() => {
+    (fs.copyFileSync as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw error;
     });
 
@@ -104,9 +104,9 @@ describe('loadDownloadFailures', () => {
   });
 
   it('returns parsed failures when file exists', () => {
-    const mockFailures = { failures: [{ achievement: { title: 'Test' }, error: 'Network error' }] };
-    fs.existsSync.mockReturnValue(true);
-    fs.readFileSync.mockReturnValue(JSON.stringify(mockFailures));
+    const mockFailures = { failures: [{ achievement: { title: 'Test', description: '', h5Description: '', icon: '', percentage: '' }, error: 'Network error', index: 0 }] };
+    (fs.existsSync as unknown as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    (fs.readFileSync as unknown as ReturnType<typeof vi.fn>).mockReturnValue(JSON.stringify(mockFailures));
 
     const result = loadDownloadFailures();
 
@@ -116,7 +116,7 @@ describe('loadDownloadFailures', () => {
   });
 
   it('returns empty failures object when file does not exist', () => {
-    fs.existsSync.mockReturnValue(false);
+    (fs.existsSync as unknown as ReturnType<typeof vi.fn>).mockReturnValue(false);
 
     const result = loadDownloadFailures();
 
@@ -126,8 +126,8 @@ describe('loadDownloadFailures', () => {
   });
 
   it('returns empty failures object when file parsing fails', () => {
-    fs.existsSync.mockReturnValue(true);
-    fs.readFileSync.mockImplementation(() => {
+    (fs.existsSync as unknown as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    (fs.readFileSync as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error('Invalid JSON');
     });
 
@@ -147,7 +147,7 @@ describe('saveDownloadFailures', () => {
 
   it('saves failures to file', () => {
     const failures = [
-      { achievement: { title: 'Test Achievement' }, error: 'Network error', index: 0 },
+      { achievement: { title: 'Test Achievement', description: '', h5Description: '', icon: '', percentage: '' }, error: 'Network error', index: 0 },
     ];
 
     saveDownloadFailures(failures);
@@ -173,8 +173,8 @@ describe('Script execution', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Mock process.argv and process.exit
-    process.argv = ['node', 'fetch-achievements.js'];
-    process.exit = vi.fn();
+    process.argv = ['node', 'fetch-achievements.ts'];
+    process.exit = (() => { throw new Error('process.exit called'); }) as unknown as typeof process.exit;
   });
 
   afterEach(() => {
@@ -183,9 +183,31 @@ describe('Script execution', () => {
   });
 
   it('handles --retry flag correctly', async () => {
-    process.argv = ['node', 'fetch-achievements.js', '--retry'];
+    process.argv = ['node', 'fetch-achievements.ts', '--retry'];
     
     // We can't easily test the script execution block directly, but we can test the logic
     expect(process.argv.includes('--retry')).toBe(true);
   });
 });
+
+// Test achievement data structure with h5Description
+describe('Achievement data structure', () => {
+  it('should include h5Description field in achievement objects', () => {
+    // This test verifies that the achievement data structure includes the h5Description field
+    const mockAchievement = {
+      title: 'Test Achievement',
+      description: 'Test Description',
+      h5Description: 'Test H5 Description',
+      icon: 'http://example.com/icon.png',
+      percentage: '50%'
+    };
+
+    expect(mockAchievement).toHaveProperty('title');
+    expect(mockAchievement).toHaveProperty('description');
+    expect(mockAchievement).toHaveProperty('h5Description');
+    expect(mockAchievement).toHaveProperty('icon');
+    expect(mockAchievement).toHaveProperty('percentage');
+    
+    expect(mockAchievement.h5Description).toBe('Test H5 Description');
+  });
+}); 

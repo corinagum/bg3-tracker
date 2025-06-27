@@ -1,9 +1,39 @@
-console.log('Starting fetch-achievements.js');
+console.log('Starting fetch-achievements.ts');
 
 import fs from 'fs';
 import path from 'path';
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer';
 import { fileURLToPath } from 'url';
+
+// Type definitions
+interface Achievement {
+  title: string;
+  description: string;
+  h5Description: string;
+  icon: string;
+  percentage: string;
+  iconUrl?: string;
+  iconLocal?: string;
+  iconPublic?: string;
+}
+
+interface DownloadFailure {
+  achievement: Achievement;
+  index: number;
+  error: string;
+}
+
+interface DownloadFailures {
+  failures: DownloadFailure[];
+}
+
+interface FetchOptions {
+  retryFailedDownloadsOnly?: boolean;
+}
+
+interface RetryItem extends DownloadFailure {
+  isRetry: boolean;
+}
 
 // Setup paths
 const __filename = fileURLToPath(import.meta.url);
@@ -35,7 +65,7 @@ if (!fs.existsSync(publicImgDir)) {
 }
 
 // Helper function to download an image
-export async function downloadImage(url, filename) {
+export async function downloadImage(url: string, filename: string): Promise<boolean> {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -45,13 +75,13 @@ export async function downloadImage(url, filename) {
     fs.writeFileSync(filename, Buffer.from(buffer));
     return true;
   } catch (error) {
-    console.error(`Error downloading ${url}: ${error.message}`);
+    console.error(`Error downloading ${url}: ${error instanceof Error ? error.message : String(error)}`);
     throw error;
   }
 }
 
 // Helper function to create a dash-separated filename from achievement title
-export function createDashSeparatedFilename(title) {
+export function createDashSeparatedFilename(title: string): string {
   return title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with a single dash
@@ -60,18 +90,18 @@ export function createDashSeparatedFilename(title) {
 }
 
 // Copy a single file from source to destination
-export function copyFile(source, destination) {
+export function copyFile(source: string, destination: string): boolean {
   try {
     fs.copyFileSync(source, destination);
     return true;
   } catch (error) {
-    console.error(`Error copying file ${source} to ${destination}: ${error.message}`);
+    console.error(`Error copying file ${source} to ${destination}: ${error instanceof Error ? error.message : String(error)}`);
     return false;
   }
 }
 
 // Copy all images from data directory to public assets
-export function copyImagesToPublic() {
+export function copyImagesToPublic(): number {
   if (!fs.existsSync(imgDir)) {
     console.warn(`Image directory ${imgDir} does not exist. Nothing to copy.`);
     return 0;
@@ -100,7 +130,7 @@ export function copyImagesToPublic() {
         copiedCount++;
       } catch (error) {
         // Failed to write tests for this line
-        console.error(`Failed to copy ${file} to public assets: ${error.message}`);
+        console.error(`Failed to copy ${file} to public assets: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
   });
@@ -110,13 +140,13 @@ export function copyImagesToPublic() {
 }
 
 // Load previous download failures if any
-export function loadDownloadFailures() {
+export function loadDownloadFailures(): DownloadFailures {
   if (fs.existsSync(downloadLogPath)) {
     try {
       const data = fs.readFileSync(downloadLogPath, 'utf8');
-      return JSON.parse(data);
+      return JSON.parse(data) as DownloadFailures;
     } catch (error) {
-      console.warn(`Failed to parse download failures log: ${error.message}`);
+      console.warn(`Failed to parse download failures log: ${error instanceof Error ? error.message : String(error)}`);
       return { failures: [] };
     }
   }
@@ -124,14 +154,14 @@ export function loadDownloadFailures() {
 }
 
 // Save download failures for future retry
-export function saveDownloadFailures(failures) {
+export function saveDownloadFailures(failures: DownloadFailure[]): void {
   fs.writeFileSync(downloadLogPath, JSON.stringify({ failures }, null, 2));
 }
 
-export async function fetchAchievements(options = {}) {
+export async function fetchAchievements(options: FetchOptions = {}): Promise<Achievement[]> {
   const { retryFailedDownloadsOnly = false } = options;
-  let achievements = [];
-  let downloadFailures = [];
+  let achievements: Achievement[] = [];
+  let downloadFailures: DownloadFailure[] = [];
 
   console.log('Starting achievement fetching process...');
   console.log(`Data directory: ${dataDir}`);
@@ -147,18 +177,25 @@ export async function fetchAchievements(options = {}) {
     console.log(`Fetching achievements from ${url}...`);
 
     try {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
+      const browser: Browser = await puppeteer.launch();
+      const page: Page = await browser.newPage();
       await page.goto(url, { waitUntil: 'networkidle2' });
 
       achievements = await page.evaluate(() => {
         const rows = document.querySelectorAll('.achieveRow');
         return Array.from(rows).map((row) => {
-          const title = row.querySelector('.achieveTxt h3')?.innerText.trim();
-          const description = row.querySelector('.achieveTxt .achieveDesc')?.innerText.trim();
-          const icon = row.querySelector('.achieveImgHolder img')?.src;
-          const percentage = row.querySelector('.achievePercent')?.innerText.trim();
-          return { title, description, icon, percentage };
+          const title = row.querySelector('.achieveTxt h3')?.textContent?.trim() || '';
+          const description = row.querySelector('.achieveTxt .achieveDesc')?.textContent?.trim() || '';
+          const h5Description = row.querySelector('.achieveTxt h5')?.textContent?.trim() || '';
+          const icon = (row.querySelector('.achieveImgHolder img') as HTMLImageElement)?.src || '';
+          const percentage = row.querySelector('.achievePercent')?.textContent?.trim() || '';
+          return { 
+            title, 
+            description, 
+            h5Description,
+            icon, 
+            percentage 
+          };
         });
       });
 
@@ -168,20 +205,20 @@ export async function fetchAchievements(options = {}) {
       fs.writeFileSync(outputPath, JSON.stringify(achievements, null, 2));
       console.log(`✅ Extracted ${achievements.length} achievements to ${outputPath}`);
     } catch (error) {
-      console.error(`❌ Error fetching achievements: ${error.message}`);
+      console.error(`❌ Error fetching achievements: ${error instanceof Error ? error.message : String(error)}`);
       throw error;
     }
   } else if (fs.existsSync(outputPath)) {
     // When retrying downloads only, load existing achievements data
     console.log('Loading existing achievements data for retry...');
     const data = fs.readFileSync(outputPath, 'utf8');
-    achievements = JSON.parse(data);
+    achievements = JSON.parse(data) as Achievement[];
   } else {
     throw new Error('Cannot retry downloads: No existing achievements data found');
   }
 
   // Process to download or retry downloads
-  const toProcess = retryFailedDownloadsOnly
+  const toProcess: (Achievement | RetryItem)[] = retryFailedDownloadsOnly
     ? previousFailures.map((failure) => ({
         ...failure,
         isRetry: true,
@@ -202,7 +239,7 @@ export async function fetchAchievements(options = {}) {
   downloadFailures = [];
 
   // Check which files already exist
-  const existingFiles = new Set();
+  const existingFiles = new Set<string>();
   if (fs.existsSync(imgDir)) {
     fs.readdirSync(imgDir).forEach((file) => {
       existingFiles.add(file);
@@ -210,15 +247,15 @@ export async function fetchAchievements(options = {}) {
   }
 
   // Track which achievements have been updated with local paths
-  const enhancedIndexMap = new Map();
+  const enhancedIndexMap = new Map<number, Achievement>();
 
   for (let i = 0; i < toProcess.length; i += batchSize) {
     const batch = toProcess.slice(i, i + batchSize);
 
     await Promise.all(
       batch.map(async (item, idx) => {
-        const achievement = item.isRetry ? item.achievement : item;
-        const index = item.isRetry ? item.index : i + idx;
+        const achievement = 'isRetry' in item ? item.achievement : item;
+        const index = 'isRetry' in item ? item.index : i + idx;
 
         if (!achievement.title || !achievement.icon) {
           console.log(`⚠️ Skipping achievement without title or icon at index ${index}`);
@@ -235,7 +272,7 @@ export async function fetchAchievements(options = {}) {
           const publicRelativePath = `/assets/achievements/${imgFilename}`;
 
           // Skip if file already exists
-          if (existingFiles.has(imgFilename) && !item.isRetry) {
+          if (existingFiles.has(imgFilename) && !('isRetry' in item)) {
             console.log(`⏭️ Skipped ${imgFilename} (already exists)`);
 
             // Still update the achievement with the local path
@@ -277,13 +314,13 @@ export async function fetchAchievements(options = {}) {
             }
           }
 
-          console.log(`✅ ${item.isRetry ? 'Retry succeeded' : 'Downloaded'} ${imgFilename}`);
+          console.log(`✅ ${'isRetry' in item ? 'Retry succeeded' : 'Downloaded'} ${imgFilename}`);
         } catch (error) {
-          console.error(`❌ Failed to download icon for "${achievement.title}": ${error.message}`);
+          console.error(`❌ Failed to download icon for "${achievement.title}": ${error instanceof Error ? error.message : String(error)}`);
           downloadFailures.push({
             achievement,
             index,
-            error: error.message,
+            error: error instanceof Error ? error.message : String(error),
           });
         }
       })
@@ -332,4 +369,4 @@ if (process.argv[1] === __filename) {
     console.error('❌ Error during achievement fetching:', error);
     process.exit(1);
   });
-}
+} 

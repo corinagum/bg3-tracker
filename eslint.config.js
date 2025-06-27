@@ -1,5 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
 
 export default [
   // Global ignores - this must come first
@@ -16,9 +18,32 @@ export default [
   // Base JS recommended config
   js.configs.recommended,
 
-  // Simple configuration for all JavaScript and TypeScript files
+  // TypeScript configuration
   {
-    files: ['**/*.{js,ts,tsx}'],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      'no-console': 'warn',
+      ...tseslint.configs.recommended.rules,
+    },
+  },
+
+  // Simple configuration for JavaScript files
+  {
+    files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
@@ -34,9 +59,16 @@ export default [
 
   // Special override for fetch-achievements.js
   {
-    files: ['**/fetch-achievements.js', '**/fetch-achievements-integration.test.js'],
+    files: ['**/fetch-achievements.ts', '**/fetch-achievements-integration.test.ts'],
     rules: {
-      'no-console': 'off' // Turn off the no-console rule for these files
+      'no-console': 'off'
     }
+  },
+
+  {
+    files: ['**/*.test.ts', '**/*.test.js', '**/*.test.tsx', '**/*.test.jsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   }
 ];
