@@ -19,3 +19,8 @@
 - Update `import-order.js` to modern ESLint
 - Add template html `list.html` and `styles.css`
 - Placeholder `index.ts`
+
+- Display achievements
+- Move to TS
+- Add roadmap
+- Componentize
