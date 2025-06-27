@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 
-import { fetchSteamProfileAchievements } from '../src/utils/steam-api.js';
+import { fetchSteamProfileAchievements } from '../src/services/steam-api.js';
 
 interface CliOptions {
   steamId?: string;

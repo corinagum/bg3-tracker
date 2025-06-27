@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { fileURLToPath } from 'url';
-import type { Achievement, DownloadFailure, DownloadFailures, FetchOptions, RetryItem } from './types';
+import type { CommunityAchievement, DownloadFailure, DownloadFailures, FetchOptions, RetryItem } from './types';
 
 // Setup paths
 const __filename = fileURLToPath(import.meta.url);
@@ -115,9 +115,9 @@ export function saveDownloadFailures(failures: DownloadFailure[]): void {
   fs.writeFileSync(downloadLogPath, JSON.stringify({ failures }, null, 2));
 }
 
-export async function fetchAchievements(options: FetchOptions = {}): Promise<Achievement[]> {
+export async function fetchAchievements(options: FetchOptions = {}): Promise<CommunityAchievement[]> {
   const { retryFailedDownloadsOnly = false } = options;
-  let achievements: Achievement[] = [];
+  let achievements: CommunityAchievement[] = [];
   let downloadFailures: DownloadFailure[] = [];
 
   console.log('Starting achievement fetching process...');
@@ -163,12 +163,12 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   } else if (fs.existsSync(outputPath)) {
     console.log('Loading existing achievements data for retry...');
     const data = fs.readFileSync(outputPath, 'utf8');
-    achievements = JSON.parse(data) as Achievement[];
+    achievements = JSON.parse(data) as CommunityAchievement[];
   } else {
     throw new Error('Cannot retry downloads: No existing achievements data found');
   }
 
-  const toProcess: (Achievement | RetryItem)[] = retryFailedDownloadsOnly
+  const toProcess: (CommunityAchievement | RetryItem)[] = retryFailedDownloadsOnly
     ? previousFailures.map((failure) => ({
       ...failure,
       isRetry: true,
@@ -192,7 +192,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
       existingFiles.add(file);
     });
   }
-  const enhancedIndexMap = new Map<number, Achievement>();
+  const enhancedIndexMap = new Map<number, CommunityAchievement>();
   for (let i = 0; i < toProcess.length; i += batchSize) {
     const batch = toProcess.slice(i, i + batchSize);
     await Promise.all(

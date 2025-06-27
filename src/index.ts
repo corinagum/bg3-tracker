@@ -1,18 +1,24 @@
 import './styles/main.css';
+import './styles/auth.css';
 import { AchievementListComponent } from '@components/AchievementList';
+import { AuthComponent } from '@components/Auth';
 
 export const app = {
   name: 'BG3 Tracker',
-  initialize: () => {
-    renderAchievements();
+  initialize: async() => {
+    return renderApp();
   },
 };
 
-async function renderAchievements() {
+async function renderApp() {
   const app = document.getElementById('app');
   if (!app) {
     throw new Error('App container not found');
   }
+
+  // Create and add authentication component
+  const authComponent = new AuthComponent();
+  app.appendChild(authComponent.getElement());
 
   // Create achievement list container
   const achievementList = AchievementListComponent.create();
@@ -28,8 +34,8 @@ async function renderAchievements() {
 
     // Render achievements using the component
     AchievementListComponent.renderAchievements(achievementList, achievementsData);
-  } catch (error) {
-    console.error('Error loading achievements:', error);
+  } catch {
+    // console.error('Error loading achievements:', error);
     AchievementListComponent.renderError(
       achievementList,
       'Error loading achievements',

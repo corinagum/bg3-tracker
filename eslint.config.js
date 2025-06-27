@@ -104,7 +104,7 @@ export default [
   },
 
   {
-    files: ['**/fetch-achievements.ts'],
+    files: ['**/fetch-achievements.ts', 'scripts/fetch-achievements.ts'],
     rules: {
       'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
