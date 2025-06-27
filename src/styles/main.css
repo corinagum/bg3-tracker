@@ -1,0 +1,26 @@
+/* Main CSS file - imports all styles */
+
+/* Import component-specific styles */
+@import './achievements.css';
+
+/* Global styles can be added here */
+:root {
+  /* CSS custom properties for theming */
+  --primary-color: #1b1c1d;
+  --secondary-color: #3e3f42;
+  --text-color: #f1f1f1;
+  --text-secondary: #ccc;
+  --background-color: #2d2e30;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+} 
