@@ -8,11 +8,11 @@ import { describe, it, expect, beforeAll, afterEach, vi, beforeEach } from 'vite
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { 
-  downloadImage, 
-  copyFile, 
+import {
+  downloadImage,
+  copyFile,
   copyImagesToPublic,
-  fetchAchievements 
+  fetchAchievements
 } from './fetch-achievements';
 
 // Get the directory path for test files
@@ -25,7 +25,7 @@ vi.mock('puppeteer', () => ({
   default: {
     launch: vi.fn().mockResolvedValue({
       newPage: vi.fn().mockResolvedValue({
-        goto: vi.fn().mockResolvedValue(),
+        goto: vi.fn().mockResolvedValue({} as any),
         evaluate: vi.fn().mockResolvedValue([
           {
             title: 'Test Achievement 1',
@@ -42,9 +42,9 @@ vi.mock('puppeteer', () => ({
             percentage: '25%'
           }
         ]),
-        close: vi.fn().mockResolvedValue()
+        close: vi.fn().mockResolvedValue(undefined)
       }),
-      close: vi.fn().mockResolvedValue()
+      close: vi.fn().mockResolvedValue(undefined)
     })
   }
 }));
@@ -175,11 +175,11 @@ describe('copyImagesToPublic', () => {
     // Create test images in a temporary directory structure
     const testImgDir = path.join(testDir, 'temp-img');
     const testPublicDir = path.join(testDir, 'temp-public');
-    
+
     // Create directories
     fs.mkdirSync(testImgDir, { recursive: true });
     fs.mkdirSync(testPublicDir, { recursive: true });
-    
+
     // Create test files
     fs.writeFileSync(path.join(testImgDir, 'test1.png'), 'image1');
     fs.writeFileSync(path.join(testImgDir, 'test2.jpg'), 'image2');
@@ -292,7 +292,7 @@ describe('fetchAchievements', () => {
         percentage: '75%'
       }
     ];
-    
+
     // Ensure the directory exists before writing the file
     fs.mkdirSync(testDataDir, { recursive: true });
     fs.writeFileSync(achievementsFile, JSON.stringify(mockAchievements));
@@ -339,7 +339,7 @@ describe('fetchAchievements', () => {
     const originalMkdirSync = fs.mkdirSync;
 
     fs.existsSync = mockFs.existsSync as typeof fs.existsSync;
-    fs.readFileSync = mockFs.readFileSync as typeof fs.readFileSync;
+    fs.readFileSync = mockFs.readFileSync as unknown as typeof fs.readFileSync;
     fs.readdirSync = mockFs.readdirSync as typeof fs.readdirSync;
     fs.writeFileSync = mockFs.writeFileSync as typeof fs.writeFileSync;
     fs.mkdirSync = mockFs.mkdirSync as typeof fs.mkdirSync;
@@ -474,11 +474,11 @@ describe('fetchAchievements', () => {
     const puppeteer = await import('puppeteer');
     (puppeteer.default.launch as ReturnType<typeof vi.fn>).mockResolvedValue({
       newPage: vi.fn().mockResolvedValue({
-        goto: vi.fn().mockResolvedValue(),
+        goto: vi.fn().mockResolvedValue({} as any),
         evaluate: vi.fn().mockResolvedValue([]), // Empty achievements
-        close: vi.fn().mockResolvedValue()
+        close: vi.fn().mockResolvedValue(undefined)
       }),
-      close: vi.fn().mockResolvedValue()
+      close: vi.fn().mockResolvedValue(undefined)
     });
 
     // Mock successful image downloads
@@ -532,7 +532,7 @@ describe('fetchAchievements', () => {
     const puppeteer = await import('puppeteer');
     (puppeteer.default.launch as ReturnType<typeof vi.fn>).mockResolvedValue({
       newPage: vi.fn().mockResolvedValue({
-        goto: vi.fn().mockResolvedValue(),
+        goto: vi.fn().mockResolvedValue({} as any),
         evaluate: vi.fn().mockResolvedValue([
           {
             title: 'Valid Achievement',
@@ -556,9 +556,9 @@ describe('fetchAchievements', () => {
             percentage: '10%'
           }
         ]),
-        close: vi.fn().mockResolvedValue()
+        close: vi.fn().mockResolvedValue(undefined)
       }),
-      close: vi.fn().mockResolvedValue()
+      close: vi.fn().mockResolvedValue(undefined)
     });
 
     // Mock successful image downloads
@@ -620,7 +620,7 @@ describe('fetchAchievements', () => {
         percentage: '75%'
       }
     ];
-    
+
     // Ensure the directory exists before writing the file
     fs.mkdirSync(path.dirname(achievementsFile), { recursive: true });
     fs.writeFileSync(achievementsFile, JSON.stringify(mockAchievements));
@@ -655,7 +655,7 @@ describe('fetchAchievements', () => {
     const originalMkdirSync = fs.mkdirSync;
 
     fs.existsSync = mockFs.existsSync as typeof fs.existsSync;
-    fs.readFileSync = mockFs.readFileSync as typeof fs.readFileSync;
+    fs.readFileSync = mockFs.readFileSync as unknown as typeof fs.readFileSync;
     fs.readdirSync = mockFs.readdirSync as typeof fs.readdirSync;
     fs.writeFileSync = mockFs.writeFileSync as typeof fs.writeFileSync;
     fs.mkdirSync = mockFs.mkdirSync as typeof fs.mkdirSync;
@@ -688,7 +688,7 @@ describe('fetchAchievements', () => {
         percentage: '75%'
       }
     ];
-    
+
     // Ensure the directory exists before writing the file
     fs.mkdirSync(path.dirname(achievementsFile), { recursive: true });
     fs.writeFileSync(achievementsFile, JSON.stringify(mockAchievements));
@@ -735,7 +735,7 @@ describe('fetchAchievements', () => {
     const originalMkdirSync = fs.mkdirSync;
 
     fs.existsSync = mockFs.existsSync as typeof fs.existsSync;
-    fs.readFileSync = mockFs.readFileSync as typeof fs.readFileSync;
+    fs.readFileSync = mockFs.readFileSync as unknown as typeof fs.readFileSync;
     fs.readdirSync = mockFs.readdirSync as typeof fs.readdirSync;
     fs.writeFileSync = mockFs.writeFileSync as typeof fs.writeFileSync;
     fs.mkdirSync = mockFs.mkdirSync as typeof fs.mkdirSync;
@@ -759,4 +759,4 @@ describe('fetchAchievements', () => {
       fs.mkdirSync = originalMkdirSync;
     }
   });
-}); 
+});
