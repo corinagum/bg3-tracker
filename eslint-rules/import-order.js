@@ -4,9 +4,9 @@ const orderImports = {
     docs: {
       description: 'Enforce devtools import ordering convention',
       category: 'Stylistic Issues',
-      recommended: true
+      recommended: true,
     },
-    fixable: 'code'
+    fixable: 'code',
   },
   create(context) {
     return {
@@ -26,7 +26,9 @@ const orderImports = {
 
         // Get all comments after the last import
         const lastImport = imports[imports.length - 1];
-        const nextNode = node.body.find((n) => n.type !== 'ImportDeclaration' && lastImport.range[1] < n.range[0]);
+        const nextNode = node.body.find(
+          (n) => n.type !== 'ImportDeclaration' && lastImport.range[1] < n.range[0]
+        );
 
         // Get trailing comments
         let trailingComments = '';
@@ -46,7 +48,7 @@ const orderImports = {
           react: [],
           external: [],
           internal: [],
-          local: []
+          local: [],
         };
 
         // Categorize imports
@@ -131,7 +133,9 @@ const orderImports = {
           const importTexts = topImports.map((imp) => {
             const comments = getNodeComments(imp);
             const commentText = comments.map((c) => sourceCode.getText(c)).join('\n');
-            return commentText ? `${commentText}\n${sourceCode.getText(imp)}` : sourceCode.getText(imp);
+            return commentText
+              ? `${commentText}\n${sourceCode.getText(imp)}`
+              : sourceCode.getText(imp);
           });
           importParts.push(importTexts.join('\n'));
         }
@@ -142,7 +146,9 @@ const orderImports = {
           const importTexts = importGroups.internal.map((imp) => {
             const comments = getNodeComments(imp);
             const commentText = comments.map((c) => sourceCode.getText(c)).join('\n');
-            return commentText ? `${commentText}\n${sourceCode.getText(imp)}` : sourceCode.getText(imp);
+            return commentText
+              ? `${commentText}\n${sourceCode.getText(imp)}`
+              : sourceCode.getText(imp);
           });
           importParts.push(importTexts.join('\n'));
         }
@@ -153,7 +159,9 @@ const orderImports = {
           const importTexts = importGroups.local.map((imp) => {
             const comments = getNodeComments(imp);
             const commentText = comments.map((c) => sourceCode.getText(c)).join('\n');
-            return commentText ? `${commentText}\n${sourceCode.getText(imp)}` : sourceCode.getText(imp);
+            return commentText
+              ? `${commentText}\n${sourceCode.getText(imp)}`
+              : sourceCode.getText(imp);
           });
           importParts.push(importTexts.join('\n'));
         }
@@ -183,7 +191,7 @@ const orderImports = {
               message: 'Import order needs to be fixed.',
               fix(fixer) {
                 return fixer.replaceTextRange([firstImport.range[0], nextStart], expectedText);
-              }
+              },
             });
           }
         } else {
@@ -194,13 +202,13 @@ const orderImports = {
               message: 'Import order needs to be fixed.',
               fix(fixer) {
                 return fixer.replaceTextRange([firstImport.range[0], importEnd], desiredImportText);
-              }
+              },
             });
           }
         }
-      }
+      },
     };
-  }
+  },
 };
 
 export default orderImports;
