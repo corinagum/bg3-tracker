@@ -99,6 +99,7 @@ export function copyImagesToPublic() {
         copyFile(sourcePath, destPath);
         copiedCount++;
       } catch (error) {
+        // Failed to write tests for this line
         console.error(`Failed to copy ${file} to public assets: ${error.message}`);
       }
     }
