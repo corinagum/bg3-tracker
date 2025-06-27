@@ -72,7 +72,9 @@ function main(): void {
   try {
     const mappings = compareAliases();
 
-    console.log('🔍 Comparing aliases between vite.config.ts and tsconfig.json (normalized, path normalization applied)\n');
+    console.log(
+      '🔍 Comparing aliases between vite.config.ts and tsconfig.json (normalized, path normalization applied)\n',
+    );
 
     let hasMismatches = false;
     let hasMissing = false;

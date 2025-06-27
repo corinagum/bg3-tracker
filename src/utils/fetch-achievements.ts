@@ -67,7 +67,9 @@ export function copyFile(source: string, destination: string): boolean {
     fs.copyFileSync(source, destination);
     return true;
   } catch (error) {
-    console.error(`Error copying file ${source} to ${destination}: ${error instanceof Error ? error.message : String(error)}`);
+    console.group(`Error copying file ${source} to ${destination}`);
+    console.error(`${error instanceof Error ? error.message : String(error)}`);
+    console.groupEnd();
     return false;
   }
 }
@@ -101,8 +103,9 @@ export function copyImagesToPublic(): number {
         copyFile(sourcePath, destPath);
         copiedCount++;
       } catch (error) {
-        // Failed to write tests for this line
-        console.error(`Failed to copy ${file} to public assets: ${error instanceof Error ? error.message : String(error)}`);
+        console.group(`Failed to copy ${file} to public assets`);
+        console.error(`${error instanceof Error ? error.message : String(error)}`);
+        console.groupEnd();
       }
     }
   });
@@ -118,7 +121,9 @@ export function loadDownloadFailures(): DownloadFailures {
       const data = fs.readFileSync(downloadLogPath, 'utf8');
       return JSON.parse(data) as DownloadFailures;
     } catch (error) {
-      console.warn(`Failed to parse download failures log: ${error instanceof Error ? error.message : String(error)}`);
+      console.group('Failed to parse download failures log');
+      console.error(`${error instanceof Error ? error.message : String(error)}`);
+      console.groupEnd();
       return { failures: [] };
     }
   }
@@ -177,7 +182,9 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
       fs.writeFileSync(outputPath, JSON.stringify(achievements, null, 2));
       console.log(`✅ Extracted ${achievements.length} achievements to ${outputPath}`);
     } catch (error) {
-      console.error(`❌ Error fetching achievements: ${error instanceof Error ? error.message : String(error)}`);
+      console.error(
+        `❌ Error fetching achievements: ${error instanceof Error ? error.message : String(error)}`,
+      );
       throw error;
     }
   } else if (fs.existsSync(outputPath)) {
@@ -288,7 +295,9 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
 
           console.log(`✅ ${'isRetry' in item ? 'Retry succeeded' : 'Downloaded'} ${imgFilename}`);
         } catch (error) {
-          console.error(`❌ Failed to download icon for "${achievement.title}": ${error instanceof Error ? error.message : String(error)}`);
+          console.group(`❌ Failed to download icon for "${achievement.title}"`);
+          console.error(`${error instanceof Error ? error.message : String(error)}`);
+          console.groupEnd();
           downloadFailures.push({
             achievement,
             index,
@@ -325,7 +334,9 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   copyImagesToPublic();
 
   console.log(
-    `✅ ${toProcess.length - downloadFailures.length} images ${retryFailedDownloadsOnly ? 'retried' : 'downloaded'} successfully`,
+    `✅ ${toProcess.length - downloadFailures.length} images ${
+      retryFailedDownloadsOnly ? 'retried' : 'downloaded'
+    } successfully`,
   );
   console.log(`✅ Images saved to ${imgDir} and ${publicImgDir}`);
 

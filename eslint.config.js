@@ -103,18 +103,21 @@ export default [
     },
   },
 
-  // Special override for fetch-achievements.js
   {
-    files: ['**/fetch-achievements.ts', '**/fetch-achievements-integration.test.ts'],
+    files: ['**/fetch-achievements.ts'],
     rules: {
       'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 
+  // Special override for test files and scripts
   {
-    files: ['**/*.test.ts', '**/*.test.js', '**/*.test.tsx', '**/*.test.jsx'],
+    files: ['**/*.test.{js,jsx,ts,tsx}', 'scripts/**'],
     rules: {
+      'no-console': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      'max-len': 'off',
     },
   },
 ];

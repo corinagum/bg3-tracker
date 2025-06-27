@@ -17,7 +17,9 @@ export class AchievementComponent {
         <div class="achievement-description">${achievement.description || 'No description available'}</div>
         <div class="progress-container">
           <div class="progress-bar-container">
-            <div class="progress-bar" style="width: ${achievement.percentage ? achievement.percentage.replace('%', '') : '0'}%;"></div>
+            <div class="progress-bar" style="width: ${
+  achievement.percentage ? achievement.percentage.replace('%', '') : '0'
+}%;"></div>
           </div>
           <div class="progress-label">${achievement.percentage || '0%'}</div>
         </div>
