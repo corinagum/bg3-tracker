@@ -1,5 +1,13 @@
 # Changelog
 
+## June 27, 2025
+- Display achievements
+- Move to TS
+- Add roadmap
+- Componentize
+- Fiddle with progress bar styles
+- Update script to also fetch achievement description
+
 ## June 26, 2025
 
 - Init project
@@ -20,7 +28,3 @@
 - Add template html `list.html` and `styles.css`
 - Placeholder `index.ts`
 
-- Display achievements
-- Move to TS
-- Add roadmap
-- Componentize

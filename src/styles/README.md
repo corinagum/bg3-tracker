@@ -27,7 +27,7 @@ import './styles/achievements.css'
 
 The project uses CSS custom properties (variables) defined in `main.css`:
 
-- `--primary-color`: Main background color (#1b1c1d)
+- `--primary-color`: Main background color (#242424)
 - `--secondary-color`: Border and secondary elements (#3e3f42)
 - `--text-color`: Primary text color (#f1f1f1)
 - `--text-secondary`: Secondary text color (#ccc)

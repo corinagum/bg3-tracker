@@ -16,16 +16,27 @@ export class AchievementComponent {
         <div class="achievement-title">${achievement.title || 'Unknown Achievement'}</div>
         <div class="achievement-description">${achievement.description || 'No description available'}</div>
         <div class="progress-container">
-          <div class="progress-bar" style="width: ${achievement.percentage ? achievement.percentage.replace('%', '') : '0'}%;"></div>
-          <div class="progress-label">${achievement.percentage || '0'}</div>
+          <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${achievement.percentage ? achievement.percentage.replace('%', '') : '0'}%;"></div>
+          </div>
+          <div class="progress-label">${achievement.percentage || '0%'}</div>
         </div>
       </div>
     `;
 
-    // Set the background image using setAttribute to avoid inline styles
+    // Set the background image
     const iconElement = achievementElement.querySelector('.achievement-icon') as HTMLElement;
-    if (iconElement && (achievement.iconPublic || achievement.icon)) {
-      iconElement.style.backgroundImage = `url('${achievement.iconPublic || achievement.icon}')`;
+    if (iconElement) {
+      const imageUrl = achievement.iconPublic || achievement.icon;
+      if (imageUrl) {
+        iconElement.style.backgroundImage = `url('${imageUrl}')`;
+        
+        // Add error handling for image loading
+        const img = new Image();
+        img.src = imageUrl;
+      } else {
+        console.warn(`No icon URL found for achievement: ${achievement.title}`);
+      }
     }
 
     return achievementElement;

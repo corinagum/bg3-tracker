@@ -2,15 +2,23 @@
 
 /* Import component-specific styles */
 @import './achievements.css';
+@import './icon.css';
 
 /* Global styles can be added here */
 :root {
   /* CSS custom properties for theming */
-  --primary-color: #1b1c1d;
+  --primary-color: #242424;
   --secondary-color: #3e3f42;
+  --secondary-hover: #515358;
   --text-color: #f1f1f1;
   --text-secondary: #ccc;
   --background-color: #2d2e30;
+  --background-secondary: #3e3f42;
+  --border-color: #4a4b4e;
+  --progress-bg: #2e2f31;
+  --progress-bar: #0088ff;
+  --progress-text: white;
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -20,7 +28,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Verdana, sans-serif;
   background-color: var(--primary-color);
   color: var(--text-color);
-} 
+}

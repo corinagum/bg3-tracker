@@ -14,13 +14,13 @@
   padding: 1rem;
   background: var(--background-secondary);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .achievement:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.6)
+
 }
 
 .achievement-icon {
@@ -82,4 +82,32 @@
 
 .refresh-button:hover {
   background: var(--secondary-hover);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.progress-bar-container {
+  flex: 1;
+  background-color: var(--progress-bg);
+  border-radius: 4px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: var(--progress-bar);
+  height: 100%;
+}
+
+.progress-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--progress-text);
+  min-width: 40px;
+  text-align: right;
 }
