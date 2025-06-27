@@ -9,6 +9,9 @@
 - Update script to also fetch achievement description
 - Styling adjustments for Achievements
 - Clean up scripts
+- More tests
+- Remove prettier
+- Add scripts for creating a new alias (vite and ts)
 
 ## June 26, 2025
 

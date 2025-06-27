@@ -11,15 +11,27 @@
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,
-    "types": ["node", "vitest"],
+    "types": [
+      "node",
+      "vitest"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/components/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@data/*": ["src/data/*"]
     }
   },
-  "include": ["src/**/*", "tests/**/*", "eslint.config.js", "eslint-rules/**/*.js"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "eslint.config.js",
+    "eslint-rules/**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

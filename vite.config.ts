@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+// / <reference types="vitest" />
 import { defineConfig } from 'vite';
 import { configDefaults } from 'vitest/config';
 import { resolve } from 'path';
@@ -15,6 +15,7 @@ export default defineConfig({
       '@utils': resolve(__dirname, './src/utils'),
       '@components': resolve(__dirname, './src/components'),
       '@assets': resolve(__dirname, './src/assets'),
+      '@data': resolve(__dirname, './src/data'),
     },
   },
   test: {
@@ -33,6 +34,7 @@ export default defineConfig({
         'eslint-rules/**',
         '**/*.d.ts',
         '**/types.{js,ts}',
+        '**/scripts/**',
       ],
       thresholds: {
         statements: 80,

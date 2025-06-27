@@ -38,6 +38,29 @@ export default [
     rules: {
       'no-console': 'warn',
       ...tseslint.configs.recommended.rules,
+
+      // Formatting rules (replacing Prettier)
+      'indent': ['error', 2],
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      'comma-dangle': ['error', 'always-multiline'],
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'max-len': ['warn', { 'code': 120 }],
+      'no-trailing-spaces': 'error',
+      'eol-last': 'error',
+      'no-multiple-empty-lines': ['error', { 'max': 1 }],
+      'arrow-spacing': 'error',
+      'comma-spacing': 'error',
+      'key-spacing': 'error',
+      'keyword-spacing': 'error',
+      'object-property-newline': ['error', { 'allowAllPropertiesOnSameLine': true }],
+      'operator-linebreak': ['error', 'before'],
+      'space-before-blocks': 'error',
+      'space-before-function-paren': ['error', 'never'],
+      'space-in-parens': ['error', 'never'],
+      'space-infix-ops': 'error',
+      'spaced-comment': ['error', 'always'],
     },
   },
 
@@ -54,6 +77,29 @@ export default [
     },
     rules: {
       'no-console': 'warn',
+
+      // Formatting rules for JS files
+      'indent': ['error', 2],
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      'comma-dangle': ['error', 'always-multiline'],
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'max-len': ['error', { 'code': 120 }],
+      'no-trailing-spaces': 'error',
+      'eol-last': 'error',
+      'no-multiple-empty-lines': ['error', { 'max': 1 }],
+      'arrow-spacing': 'error',
+      'comma-spacing': 'error',
+      'key-spacing': 'error',
+      'keyword-spacing': 'error',
+      'object-property-newline': ['error', { 'allowAllPropertiesOnSameLine': true }],
+      'operator-linebreak': ['error', 'before'],
+      'space-before-blocks': 'error',
+      'space-before-function-paren': ['error', 'never'],
+      'space-in-parens': ['error', 'never'],
+      'space-infix-ops': 'error',
+      'spaced-comment': ['error', 'always'],
     },
   },
 
@@ -61,8 +107,8 @@ export default [
   {
     files: ['**/fetch-achievements.ts', '**/fetch-achievements-integration.test.ts'],
     rules: {
-      'no-console': 'off'
-    }
+      'no-console': 'off',
+    },
   },
 
   {
@@ -70,5 +116,5 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
     },
-  }
+  },
 ];
