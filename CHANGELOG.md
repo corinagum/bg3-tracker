@@ -7,6 +7,8 @@
 - Componentize
 - Fiddle with progress bar styles
 - Update script to also fetch achievement description
+- Styling adjustments for Achievements
+- Clean up scripts
 
 ## June 26, 2025
 

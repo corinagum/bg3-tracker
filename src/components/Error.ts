@@ -13,8 +13,16 @@ export class ErrorComponent {
     errorElement.innerHTML = `
       <h2>${title}</h2>
       <p>${message}</p>
-      <button class="refresh-button" onclick="location.reload()">${buttonText}</button>
+      <button class="refresh-button">${buttonText}</button>
     `;
+    
+    // Add event listener for the button
+    const button = errorElement.querySelector('.refresh-button');
+    if (button) {
+      button.addEventListener('click', () => {
+        window.location.reload();
+      });
+    }
     
     return errorElement;
   }

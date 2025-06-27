@@ -6,7 +6,7 @@
 
 /* Global styles can be added here */
 :root {
-  /* CSS custom properties for theming */
+  /* Dark theme (default) */
   --primary-color: #242424;
   --secondary-color: #3e3f42;
   --secondary-hover: #515358;
@@ -21,6 +21,24 @@
   --shadow: rgba(0, 0, 0, 0.5);
 }
 
+/* Light theme (when system prefers light) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --primary-color: #ffffff;
+    --secondary-color: #f5f5f5;
+    --secondary-hover: #e8e8e8;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --background-color: #ffffff;
+    --background-secondary: #f8f8f8;
+    --border-color: #e0e0e0;
+    --progress-bg: #f0f0f0;
+    --progress-bar: #007acc;
+    --progress-text: #333333;
+    --shadow: rgba(0, 0, 0, 0.1);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -31,4 +49,20 @@ body {
   font-family: 'Segoe UI', Verdana, sans-serif;
   background-color: var(--primary-color);
   color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Mobile responsive design - global styles only */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+    padding: 0.25rem;
+  }
 }
