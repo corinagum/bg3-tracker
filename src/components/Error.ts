@@ -9,13 +9,13 @@ export class ErrorComponent {
   static create(title: string, message: string, buttonText: string = 'Refresh'): HTMLElement {
     const errorElement = document.createElement('div');
     errorElement.className = 'error-container';
-    
+
     errorElement.innerHTML = `
       <h2>${title}</h2>
       <p>${message}</p>
       <button class="refresh-button">${buttonText}</button>
     `;
-    
+
     // Add event listener for the button
     const button = errorElement.querySelector('.refresh-button');
     if (button) {
@@ -23,7 +23,7 @@ export class ErrorComponent {
         window.location.reload();
       });
     }
-    
+
     return errorElement;
   }
-} 
+}

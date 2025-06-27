@@ -6,11 +6,11 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 // Mock the entire index module
 const mockApp = {
   name: 'BG3 Tracker',
-  initialize: vi.fn()
+  initialize: vi.fn(),
 };
 
 vi.mock('./index', () => ({
-  app: mockApp
+  app: mockApp,
 }));
 
 describe('App initialization', () => {

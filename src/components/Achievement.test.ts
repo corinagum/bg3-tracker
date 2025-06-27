@@ -8,7 +8,7 @@ describe('AchievementComponent', () => {
       title: 'Test Achievement',
       description: 'Test Description',
       icon: 'test-icon.png',
-      percentage: '75%'
+      percentage: '75%',
     };
 
     const element = AchievementComponent.create(achievement);
@@ -52,7 +52,7 @@ describe('AchievementComponent', () => {
     const achievement: Achievement = {
       title: 'Test Achievement',
       icon: 'regular-icon.png',
-      iconPublic: 'public-icon.png'
+      iconPublic: 'public-icon.png',
     };
 
     const element = AchievementComponent.create(achievement);

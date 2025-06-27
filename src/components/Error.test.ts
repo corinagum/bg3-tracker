@@ -28,15 +28,15 @@ describe('ErrorComponent', () => {
   it('calls window.location.reload when button is clicked', () => {
     // Create a mock function for reload
     const mockReload = vi.fn();
-    
+
     // Mock window.location.reload using Object.defineProperty
     Object.defineProperty(window, 'location', {
       value: {
-        reload: mockReload
+        reload: mockReload,
       },
-      writable: true
+      writable: true,
     });
-    
+
     const title = 'Test Error';
     const message = 'This is a test error message';
 

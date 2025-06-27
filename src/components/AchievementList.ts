@@ -20,11 +20,11 @@ export class AchievementListComponent {
    */
   static renderAchievements(container: HTMLElement, achievements: Achievement[]): void {
     container.innerHTML = '';
-    
+
     if (!achievements || achievements.length === 0) {
       const errorElement = ErrorComponent.create(
         'No achievements loaded',
-        'Run the fetch-achievements script to load achievement data.'
+        'Run the fetch-achievements script to load achievement data.',
       );
       container.appendChild(errorElement);
       return;
@@ -47,4 +47,4 @@ export class AchievementListComponent {
     const errorElement = ErrorComponent.create(title, message);
     container.appendChild(errorElement);
   }
-} 
+}

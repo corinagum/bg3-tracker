@@ -9,24 +9,24 @@ vi.mock('@components/AchievementList', () => ({
   AchievementListComponent: {
     create: mockCreate,
     renderAchievements: mockRenderAchievements,
-    renderError: mockRenderError
-  }
+    renderError: mockRenderError,
+  },
 }));
 
 // Mock the app object
 const mockApp = {
   name: 'BG3 Tracker',
-  initialize: vi.fn()
+  initialize: vi.fn(),
 };
 
 vi.mock('./index', () => ({
-  app: mockApp
+  app: mockApp,
 }));
 
 // Mock fetch
 const mockFetchResponse = {
   ok: true,
-  json: vi.fn().mockResolvedValue([{ title: 'Test Achievement' }])
+  json: vi.fn().mockResolvedValue([{ title: 'Test Achievement' }]),
 };
 global.fetch = vi.fn().mockResolvedValue(mockFetchResponse);
 
@@ -63,10 +63,10 @@ describe('Application', () => {
     expect(mockApp.initialize).toHaveBeenCalledTimes(1);
   });
 
-  it('handles fetch errors gracefully', async () => {
+  it('handles fetch errors gracefully', async() => {
     // Mock a failed fetch
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      ok: false
+      ok: false,
     });
 
     // Initialize the app
@@ -80,7 +80,7 @@ describe('Application', () => {
     expect(mockApp.initialize).toHaveBeenCalledTimes(1);
   });
 
-  it('handles fetch exceptions gracefully', async () => {
+  it('handles fetch exceptions gracefully', async() => {
     // Mock a fetch that throws an error
     (global.fetch as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error('Network error'));
 

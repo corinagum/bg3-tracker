@@ -12,7 +12,7 @@ import {
   downloadImage,
   copyFile,
   copyImagesToPublic,
-  fetchAchievements
+  fetchAchievements,
 } from './fetch-achievements';
 
 // Get the directory path for test files
@@ -32,28 +32,28 @@ vi.mock('puppeteer', () => ({
             description: 'Test Description 1',
             h5Description: 'Test H5 Description 1',
             icon: 'http://example.com/icon1.png',
-            percentage: '50%'
+            percentage: '50%',
           },
           {
             title: 'Test Achievement 2',
             description: 'Test Description 2',
             h5Description: 'Test H5 Description 2',
             icon: 'http://example.com/icon2.png',
-            percentage: '25%'
-          }
+            percentage: '25%',
+          },
         ]),
-        close: vi.fn().mockResolvedValue(undefined)
+        close: vi.fn().mockResolvedValue(undefined),
       }),
-      close: vi.fn().mockResolvedValue(undefined)
-    })
-  }
+      close: vi.fn().mockResolvedValue(undefined),
+    }),
+  },
 }));
 
 // Mock console methods
 const consoleSpy = {
   log: vi.spyOn(console, 'log').mockImplementation(() => {}),
   error: vi.spyOn(console, 'error').mockImplementation(() => {}),
-  warn: vi.spyOn(console, 'warn').mockImplementation(() => {})
+  warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
 };
 
 // Setup and teardown for tests
@@ -72,8 +72,8 @@ afterEach(() => {
   // Clean up test files more carefully
   if (fs.existsSync(testDir)) {
     try {
-    const files = fs.readdirSync(testDir);
-    for (const file of files) {
+      const files = fs.readdirSync(testDir);
+      for (const file of files) {
         const filePath = path.join(testDir, file);
         const stat = fs.statSync(filePath);
         if (stat.isDirectory()) {
@@ -98,11 +98,11 @@ afterEach(() => {
 global.fetch = vi.fn();
 
 describe('downloadImage', () => {
-  it('saves image data to file', async () => {
+  it('saves image data to file', async() => {
     // Mock fetch response
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     const testFilePath = path.join(testDir, 'test-image.png');
@@ -116,30 +116,30 @@ describe('downloadImage', () => {
     expect(fileData.length).toBeGreaterThan(0);
   });
 
-  it('throws error when fetch fails', async () => {
+  it('throws error when fetch fails', async() => {
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: false,
       status: 404,
-      statusText: 'Not Found'
+      statusText: 'Not Found',
     });
 
     const testFilePath = path.join(testDir, 'should-not-exist.png');
 
     await expect(() =>
-      downloadImage('http://example.com/not-found.png', testFilePath)
+      downloadImage('http://example.com/not-found.png', testFilePath),
     ).rejects.toThrow('Failed to download');
 
     // Verify the file doesn't exist
     expect(fs.existsSync(testFilePath)).toBe(false);
   });
 
-  it('throws error when fetch throws', async () => {
+  it('throws error when fetch throws', async() => {
     (global.fetch as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Network error'));
 
     const testFilePath = path.join(testDir, 'should-not-exist.png');
 
     await expect(() =>
-      downloadImage('http://example.com/error.png', testFilePath)
+      downloadImage('http://example.com/error.png', testFilePath),
     ).rejects.toThrow('Network error');
 
     // Verify the file doesn't exist
@@ -227,11 +227,11 @@ describe('copyImagesToPublic', () => {
 });
 
 describe('fetchAchievements', () => {
-  it('fetches achievements and downloads images successfully', async () => {
+  it('fetches achievements and downloads images successfully', async() => {
     // Mock successful image downloads
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     // Mock file system operations
@@ -244,7 +244,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -279,7 +279,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles retry mode when achievements file exists', async () => {
+  it('handles retry mode when achievements file exists', async() => {
     // Create a mock achievements file
     const testDataDir = path.join(testDir, 'data');
     const achievementsFile = path.join(testDataDir, 'bg3_achievements.json');
@@ -289,8 +289,8 @@ describe('fetchAchievements', () => {
         description: 'Existing Description',
         h5Description: 'Existing H5 Description',
         icon: 'http://example.com/existing.png',
-        percentage: '75%'
-      }
+        percentage: '75%',
+      },
     ];
 
     // Ensure the directory exists before writing the file
@@ -300,7 +300,7 @@ describe('fetchAchievements', () => {
     // Mock successful image download for retry
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     // Mock file system operations
@@ -320,15 +320,15 @@ describe('fetchAchievements', () => {
             failures: [{
               achievement: mockAchievements[0],
               index: 0,
-              error: 'Previous error'
-            }]
+              error: 'Previous error',
+            }],
           });
         }
         return '[]';
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -360,9 +360,9 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('throws error when retry mode is used but no achievements file exists', async () => {
+  it('throws error when retry mode is used but no achievements file exists', async() => {
     const mockFs = {
-      existsSync: vi.fn(() => false)
+      existsSync: vi.fn(() => false),
     };
 
     // Temporarily replace fs.existsSync
@@ -377,7 +377,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles download failures gracefully', async () => {
+  it('handles download failures gracefully', async() => {
     // Mock failed image downloads
     (global.fetch as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Network error'));
 
@@ -391,7 +391,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -427,7 +427,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles puppeteer errors gracefully', async () => {
+  it('handles puppeteer errors gracefully', async() => {
     // Mock puppeteer to throw an error
     const puppeteer = await import('puppeteer');
     (puppeteer.default.launch as ReturnType<typeof vi.fn>).mockRejectedValue(new Error('Browser launch failed'));
@@ -442,7 +442,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -469,22 +469,22 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles empty achievements list', async () => {
+  it('handles empty achievements list', async() => {
     // Mock puppeteer to return empty achievements
     const puppeteer = await import('puppeteer');
     (puppeteer.default.launch as ReturnType<typeof vi.fn>).mockResolvedValue({
       newPage: vi.fn().mockResolvedValue({
         goto: vi.fn().mockResolvedValue({} as any),
         evaluate: vi.fn().mockResolvedValue([]), // Empty achievements
-        close: vi.fn().mockResolvedValue(undefined)
+        close: vi.fn().mockResolvedValue(undefined),
       }),
-      close: vi.fn().mockResolvedValue(undefined)
+      close: vi.fn().mockResolvedValue(undefined),
     });
 
     // Mock successful image downloads
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     // Mock file system operations
@@ -497,7 +497,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -527,7 +527,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles achievements with missing title or icon', async () => {
+  it('handles achievements with missing title or icon', async() => {
     // Mock puppeteer to return achievements with missing data
     const puppeteer = await import('puppeteer');
     (puppeteer.default.launch as ReturnType<typeof vi.fn>).mockResolvedValue({
@@ -539,32 +539,32 @@ describe('fetchAchievements', () => {
             description: 'Valid Description',
             h5Description: 'Valid H5 Description',
             icon: 'http://example.com/valid.png',
-            percentage: '50%'
+            percentage: '50%',
           },
           {
             title: '', // Missing title
             description: 'Invalid Description',
             h5Description: 'Invalid H5 Description',
             icon: 'http://example.com/invalid.png',
-            percentage: '25%'
+            percentage: '25%',
           },
           {
             title: 'No Icon Achievement',
             description: 'No Icon Description',
             h5Description: 'No Icon H5 Description',
             icon: '', // Missing icon
-            percentage: '10%'
-          }
+            percentage: '10%',
+          },
         ]),
-        close: vi.fn().mockResolvedValue(undefined)
+        close: vi.fn().mockResolvedValue(undefined),
       }),
-      close: vi.fn().mockResolvedValue(undefined)
+      close: vi.fn().mockResolvedValue(undefined),
     });
 
     // Mock successful image downloads
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     // Mock file system operations
@@ -577,7 +577,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -608,7 +608,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles retry mode with no previous failures', async () => {
+  it('handles retry mode with no previous failures', async() => {
     // Create a mock achievements file
     const achievementsFile = path.join(testDir, 'data', 'bg3_achievements.json');
     const mockAchievements = [
@@ -617,8 +617,8 @@ describe('fetchAchievements', () => {
         description: 'Existing Description',
         h5Description: 'Existing H5 Description',
         icon: 'http://example.com/existing.png',
-        percentage: '75%'
-      }
+        percentage: '75%',
+      },
     ];
 
     // Ensure the directory exists before writing the file
@@ -644,7 +644,7 @@ describe('fetchAchievements', () => {
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods
@@ -676,7 +676,7 @@ describe('fetchAchievements', () => {
     }
   });
 
-  it('handles successful retry that clears previous failures', async () => {
+  it('handles successful retry that clears previous failures', async() => {
     // Create a mock achievements file
     const achievementsFile = path.join(testDir, 'data', 'bg3_achievements.json');
     const mockAchievements = [
@@ -685,8 +685,8 @@ describe('fetchAchievements', () => {
         description: 'Existing Description',
         h5Description: 'Existing H5 Description',
         icon: 'http://example.com/existing.png',
-        percentage: '75%'
-      }
+        percentage: '75%',
+      },
     ];
 
     // Ensure the directory exists before writing the file
@@ -696,7 +696,7 @@ describe('fetchAchievements', () => {
     // Mock successful image download for retry
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
       ok: true,
-      arrayBuffer: async () => new Uint8Array([1, 2, 3, 4]).buffer
+      arrayBuffer: async() => new Uint8Array([1, 2, 3, 4]).buffer,
     });
 
     // Mock file system operations
@@ -716,15 +716,15 @@ describe('fetchAchievements', () => {
             failures: [{
               achievement: mockAchievements[0],
               index: 0,
-              error: 'Previous error'
-            }]
+              error: 'Previous error',
+            }],
           });
         }
         return '[]';
       }),
       readdirSync: vi.fn(() => []),
       writeFileSync: vi.fn(),
-      mkdirSync: vi.fn()
+      mkdirSync: vi.fn(),
     };
 
     // Temporarily replace fs methods

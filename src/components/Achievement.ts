@@ -30,7 +30,7 @@ export class AchievementComponent {
       const imageUrl = achievement.iconPublic || achievement.icon;
       if (imageUrl) {
         iconElement.style.backgroundImage = `url('${imageUrl}')`;
-        
+
         // Add error handling for image loading
         const img = new Image();
         img.src = imageUrl;

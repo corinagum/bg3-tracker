@@ -18,13 +18,13 @@ describe('AchievementListComponent', () => {
       {
         title: 'Achievement 1',
         description: 'Description 1',
-        percentage: '25%'
+        percentage: '25%',
       },
       {
         title: 'Achievement 2',
         description: 'Description 2',
-        percentage: '50%'
-      }
+        percentage: '50%',
+      },
     ];
 
     AchievementListComponent.renderAchievements(container, achievementsData);
@@ -52,15 +52,15 @@ describe('AchievementListComponent', () => {
   it('handles refresh button click', () => {
     // Create a mock function for reload
     const mockReload = vi.fn();
-    
+
     // Mock window.location.reload using Object.defineProperty
     Object.defineProperty(window, 'location', {
       value: {
-        reload: mockReload
+        reload: mockReload,
       },
-      writable: true
+      writable: true,
     });
-    
+
     const container = document.createElement('div');
     container.className = 'achievement-list';
 

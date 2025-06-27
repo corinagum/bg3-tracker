@@ -5,7 +5,7 @@ export const app = {
   name: 'BG3 Tracker',
   initialize: () => {
     renderAchievements();
-  }
+  },
 };
 
 async function renderAchievements() {
@@ -23,7 +23,7 @@ async function renderAchievements() {
     if (!response.ok) {
       throw new Error('Failed to load achievements');
     }
-    
+
     const achievementsData = await response.json();
 
     // Render achievements using the component
@@ -33,7 +33,7 @@ async function renderAchievements() {
     AchievementListComponent.renderError(
       achievementList,
       'Error loading achievements',
-      'Failed to load achievement data. Please run the fetch-achievements script first.'
+      'Failed to load achievement data. Please run the fetch-achievements script first.',
     );
   }
 
