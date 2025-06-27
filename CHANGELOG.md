@@ -16,3 +16,6 @@
 - Download images from achievements page
 - Tests xD
 - Fix commonjs discrepancies
+- Update `import-order.js` to modern ESLint
+- Add template html `list.html` and `styles.css`
+- Placeholder `index.ts`

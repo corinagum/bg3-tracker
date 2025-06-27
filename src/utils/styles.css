@@ -1,0 +1,46 @@
+.achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.achievement {
+  display: flex;
+  align-items: center;
+  background-color: #1b1c1d;
+  border: 1px solid #3e3f42;
+  border-radius: 8px;
+  padding: 12px;
+  color: #f1f1f1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-icon {
+  width: 64px;
+  height: 64px;
+  background-color: #2d2e30;
+  border-radius: 4px;
+  margin-right: 16px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.achievement-details {
+  flex-grow: 1;
+}
+
+.achievement-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.achievement-description {
+  font-size: 0.9rem;
+  color: #ccc;
+}
