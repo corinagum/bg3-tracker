@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { 
-  createDashSeparatedFilename, 
-  copyFile, 
-  loadDownloadFailures, 
+import {
+  createDashSeparatedFilename,
+  copyFile,
+  loadDownloadFailures,
   saveDownloadFailures,
 } from './fetch-achievements';
 import fs from 'fs';
@@ -45,7 +45,7 @@ describe('createDashSeparatedFilename', () => {
 
   it('handles special characters and multiple spaces', () => {
     expect(createDashSeparatedFilename('The - "Ultimate" -- Achievement')).toBe(
-      'the-ultimate-achievement'
+      'the-ultimate-achievement',
     );
     expect(createDashSeparatedFilename('$p3c!@l Ch@r@ct3rs')).toBe('p3c-l-ch-r-ct3rs');
   });
@@ -92,7 +92,7 @@ describe('copyFile', () => {
     const result = copyFile('/source/file.txt', '/dest/file.txt');
 
     expect(consoleSpy.error).toHaveBeenCalledWith(
-      'Error copying file /source/file.txt to /dest/file.txt: Permission denied'
+      'Error copying file /source/file.txt to /dest/file.txt: Permission denied',
     );
     expect(result).toBe(false);
   });
@@ -134,7 +134,7 @@ describe('loadDownloadFailures', () => {
     const result = loadDownloadFailures();
 
     expect(consoleSpy.warn).toHaveBeenCalledWith(
-      'Failed to parse download failures log: Invalid JSON'
+      'Failed to parse download failures log: Invalid JSON',
     );
     expect(result).toEqual({ failures: [] });
   });
@@ -154,7 +154,7 @@ describe('saveDownloadFailures', () => {
 
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       expect.any(String),
-      JSON.stringify({ failures }, null, 2)
+      JSON.stringify({ failures }, null, 2),
     );
   });
 
@@ -163,7 +163,7 @@ describe('saveDownloadFailures', () => {
 
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       expect.any(String),
-      JSON.stringify({ failures: [] }, null, 2)
+      JSON.stringify({ failures: [] }, null, 2),
     );
   });
 });
@@ -182,9 +182,9 @@ describe('Script execution', () => {
     process.argv = [];
   });
 
-  it('handles --retry flag correctly', async () => {
+  it('handles --retry flag correctly', async() => {
     process.argv = ['node', 'fetch-achievements.ts', '--retry'];
-    
+
     // We can't easily test the script execution block directly, but we can test the logic
     expect(process.argv.includes('--retry')).toBe(true);
   });
@@ -199,7 +199,7 @@ describe('Achievement data structure', () => {
       description: 'Test Description',
       h5Description: 'Test H5 Description',
       icon: 'http://example.com/icon.png',
-      percentage: '50%'
+      percentage: '50%',
     };
 
     expect(mockAchievement).toHaveProperty('title');
@@ -207,7 +207,7 @@ describe('Achievement data structure', () => {
     expect(mockAchievement).toHaveProperty('h5Description');
     expect(mockAchievement).toHaveProperty('icon');
     expect(mockAchievement).toHaveProperty('percentage');
-    
+
     expect(mockAchievement.h5Description).toBe('Test H5 Description');
   });
-}); 
+});

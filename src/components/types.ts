@@ -4,7 +4,10 @@
 export type Achievement = {
   title?: string;
   description?: string;
+  h5Description?: string;
   icon?: string;
+  iconUrl?: string;
+  iconLocal?: string;
   iconPublic?: string;
   percentage?: string;
 };
@@ -38,4 +41,4 @@ export type AchievementListProps = {
 export type ErrorStateProps = {
   title: string;
   message: string;
-}; 
+};

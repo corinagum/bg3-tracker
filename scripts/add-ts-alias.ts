@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-function addAliasToViteConfig (alias: string, path: string): void {
+function addAliasToViteConfig(alias: string, path: string): void {
   const viteConfigPath = resolve(process.cwd(), 'vite.config.ts');
   let viteConfig = readFileSync(viteConfigPath, 'utf-8');
 
@@ -39,7 +39,7 @@ function addAliasToViteConfig (alias: string, path: string): void {
   console.log(`Added alias ${aliasName} -> ${cleanPath} to vite.config.ts`);
 }
 
-function addAliasToTsConfig (alias: string, path: string): void {
+function addAliasToTsConfig(alias: string, path: string): void {
   const tsConfigPath = resolve(process.cwd(), 'tsconfig.json');
   const tsConfig = JSON.parse(readFileSync(tsConfigPath, 'utf-8'));
 
@@ -66,7 +66,7 @@ function addAliasToTsConfig (alias: string, path: string): void {
   console.log(`Added alias ${aliasName} -> ${tsPath} to tsconfig.json`);
 }
 
-function main (): void {
+function main(): void {
   const args = process.argv.slice(2);
 
   if (args.length !== 2) {

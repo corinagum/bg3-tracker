@@ -2,18 +2,13 @@
 
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import type { AliasMapping } from './types';
 
-interface AliasMapping {
-  alias: string;
-  vitePath: string;
-  tsPath: string;
-}
-
-function normalizePath (p: string): string {
+function normalizePath(p: string): string {
   return p.replace(/^\.\//, '');
 }
 
-function extractViteAliases (): Record<string, string> {
+function extractViteAliases(): Record<string, string> {
   const viteConfigPath = resolve(process.cwd(), 'vite.config.ts');
   const viteConfig = readFileSync(viteConfigPath, 'utf-8');
 
@@ -32,7 +27,7 @@ function extractViteAliases (): Record<string, string> {
   return aliases;
 }
 
-function extractTsAliases (): Record<string, string> {
+function extractTsAliases(): Record<string, string> {
   const tsConfigPath = resolve(process.cwd(), 'tsconfig.json');
   const tsConfig = JSON.parse(readFileSync(tsConfigPath, 'utf-8'));
 
@@ -52,7 +47,7 @@ function extractTsAliases (): Record<string, string> {
   return aliases;
 }
 
-function compareAliases (): AliasMapping[] {
+function compareAliases(): AliasMapping[] {
   const viteAliases = extractViteAliases();
   const tsAliases = extractTsAliases();
 
@@ -73,7 +68,7 @@ function compareAliases (): AliasMapping[] {
   return mappings;
 }
 
-function main (): void {
+function main(): void {
   try {
     const mappings = compareAliases();
 

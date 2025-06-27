@@ -4,36 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { fileURLToPath } from 'url';
-
-// Type definitions
-interface Achievement {
-  title: string;
-  description: string;
-  h5Description: string;
-  icon: string;
-  percentage: string;
-  iconUrl?: string;
-  iconLocal?: string;
-  iconPublic?: string;
-}
-
-interface DownloadFailure {
-  achievement: Achievement;
-  index: number;
-  error: string;
-}
-
-interface DownloadFailures {
-  failures: DownloadFailure[];
-}
-
-interface FetchOptions {
-  retryFailedDownloadsOnly?: boolean;
-}
-
-interface RetryItem extends DownloadFailure {
-  isRetry: boolean;
-}
+import type { Achievement } from '../components/types';
+import type { DownloadFailure, DownloadFailures, FetchOptions, RetryItem } from './types';
 
 // Setup paths
 const __filename = fileURLToPath(import.meta.url);
@@ -117,10 +89,10 @@ export function copyImagesToPublic(): number {
 
   files.forEach((file) => {
     if (
-      file.endsWith('.png') ||
-      file.endsWith('.jpg') ||
-      file.endsWith('.jpeg') ||
-      file.endsWith('.gif')
+      file.endsWith('.png')
+      || file.endsWith('.jpg')
+      || file.endsWith('.jpeg')
+      || file.endsWith('.gif')
     ) {
       const sourcePath = path.join(imgDir, file);
       const destPath = path.join(publicImgDir, file);
@@ -189,12 +161,12 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
           const h5Description = row.querySelector('.achieveTxt h5')?.textContent?.trim() || '';
           const icon = (row.querySelector('.achieveImgHolder img') as HTMLImageElement)?.src || '';
           const percentage = row.querySelector('.achievePercent')?.textContent?.trim() || '';
-          return { 
-            title, 
-            description, 
+          return {
+            title,
+            description,
             h5Description,
-            icon, 
-            percentage 
+            icon,
+            percentage,
           };
         });
       });
@@ -220,9 +192,9 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   // Process to download or retry downloads
   const toProcess: (Achievement | RetryItem)[] = retryFailedDownloadsOnly
     ? previousFailures.map((failure) => ({
-        ...failure,
-        isRetry: true,
-      }))
+      ...failure,
+      isRetry: true,
+    }))
     : achievements;
 
   if (toProcess.length === 0) {
@@ -231,7 +203,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   }
 
   console.log(
-    `⏱️ ${retryFailedDownloadsOnly ? 'Retrying' : 'Downloading'} ${toProcess.length} achievement icons...`
+    `⏱️ ${retryFailedDownloadsOnly ? 'Retrying' : 'Downloading'} ${toProcess.length} achievement icons...`,
   );
 
   // Process downloads in groups of 5 to avoid overwhelming the server
@@ -253,7 +225,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
     const batch = toProcess.slice(i, i + batchSize);
 
     await Promise.all(
-      batch.map(async (item, idx) => {
+      batch.map(async(item, idx) => {
         const achievement = 'isRetry' in item ? item.achievement : item;
         const index = 'isRetry' in item ? item.index : i + idx;
 
@@ -323,7 +295,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
             error: error instanceof Error ? error.message : String(error),
           });
         }
-      })
+      }),
     );
   }
 
@@ -341,7 +313,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   if (downloadFailures.length > 0) {
     saveDownloadFailures(downloadFailures);
     console.log(
-      `⚠️ ${downloadFailures.length} downloads failed. Run with retry option to attempt again.`
+      `⚠️ ${downloadFailures.length} downloads failed. Run with retry option to attempt again.`,
     );
   } else if (previousFailures.length > 0) {
     // Clear the failures log if all retries succeeded
@@ -353,7 +325,7 @@ export async function fetchAchievements(options: FetchOptions = {}): Promise<Ach
   copyImagesToPublic();
 
   console.log(
-    `✅ ${toProcess.length - downloadFailures.length} images ${retryFailedDownloadsOnly ? 'retried' : 'downloaded'} successfully`
+    `✅ ${toProcess.length - downloadFailures.length} images ${retryFailedDownloadsOnly ? 'retried' : 'downloaded'} successfully`,
   );
   console.log(`✅ Images saved to ${imgDir} and ${publicImgDir}`);
 
@@ -369,4 +341,4 @@ if (process.argv[1] === __filename) {
     console.error('❌ Error during achievement fetching:', error);
     process.exit(1);
   });
-} 
+}

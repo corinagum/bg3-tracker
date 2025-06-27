@@ -12,6 +12,7 @@
 - More tests
 - Remove prettier
 - Add scripts for creating a new alias (vite and ts)
+- Organize types
 
 ## June 26, 2025
 

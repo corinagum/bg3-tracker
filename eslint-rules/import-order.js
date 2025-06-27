@@ -27,7 +27,7 @@ const orderImports = {
         // Get all comments after the last import
         const lastImport = imports[imports.length - 1];
         const nextNode = node.body.find(
-          (n) => n.type !== 'ImportDeclaration' && lastImport.range[1] < n.range[0]
+          (n) => n.type !== 'ImportDeclaration' && lastImport.range[1] < n.range[0],
         );
 
         // Get trailing comments
@@ -36,10 +36,10 @@ const orderImports = {
         const commentsAfterImports = allComments.filter((comment) => {
           const commentStart = comment.range[0];
           return (
-            commentStart > lastImport.range[1] &&
-            (!nextNode || commentStart < nextNode.range[0]) &&
+            commentStart > lastImport.range[1]
+            && (!nextNode || commentStart < nextNode.range[0])
             // Make sure the comment is actually between imports and next node
-            sourceCode.text.slice(lastImport.range[1], commentStart).trim() === ''
+            && sourceCode.text.slice(lastImport.range[1], commentStart).trim() === ''
           );
         });
         trailingComments = commentsAfterImports.map((c) => sourceCode.getText(c)).join('\n');
