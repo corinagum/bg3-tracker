@@ -5,8 +5,12 @@ import { resolve } from 'path';
 
 export default defineConfig({
   build: {
-    outDir: resolve(__dirname, 'dist'),
-    emptyOutDir: true,
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
+    },
   },
   publicDir: resolve(__dirname, 'public'),
   resolve: {
@@ -41,6 +45,15 @@ export default defineConfig({
         branches: 80,
         functions: 80,
         lines: 80,
+      },
+    },
+  },
+  server: {
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
     },
   },

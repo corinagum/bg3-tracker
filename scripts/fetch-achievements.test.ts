@@ -34,6 +34,8 @@ const consoleSpy = {
   log: vi.spyOn(console, 'log').mockImplementation(() => {}),
   error: vi.spyOn(console, 'error').mockImplementation(() => {}),
   warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
+  group: vi.spyOn(console, 'group').mockImplementation(() => {}),
+  groupEnd: vi.spyOn(console, 'groupEnd').mockImplementation(() => {}),
 };
 
 describe('createDashSeparatedFilename', () => {
@@ -92,7 +94,7 @@ describe('copyFile', () => {
     const result = copyFile('/source/file.txt', '/dest/file.txt');
 
     expect(consoleSpy.error).toHaveBeenCalledWith(
-      'Error copying file /source/file.txt to /dest/file.txt: Permission denied',
+      'Permission denied',
     );
     expect(result).toBe(false);
   });
@@ -133,9 +135,9 @@ describe('loadDownloadFailures', () => {
 
     const result = loadDownloadFailures();
 
-    expect(consoleSpy.warn).toHaveBeenCalledWith(
-      'Failed to parse download failures log: Invalid JSON',
-    );
+    expect(consoleSpy.group).toHaveBeenCalledWith('Failed to parse download failures log');
+    expect(consoleSpy.error).toHaveBeenCalledWith('Invalid JSON');
+    expect(consoleSpy.groupEnd).toHaveBeenCalled();
     expect(result).toEqual({ failures: [] });
   });
 });

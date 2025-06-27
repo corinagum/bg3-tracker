@@ -10,6 +10,8 @@ export type Achievement = {
   iconLocal?: string;
   iconPublic?: string;
   percentage?: string;
+  achieved?: boolean;
+  unlockTime?: number;
 };
 
 /**
