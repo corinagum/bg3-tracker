@@ -2,6 +2,9 @@
 
 I want to track my Baldur's Gate 3 achievements my way.
 
+Iterated quickly here is as far as this project got: 
+<img src="./as-far-as-we-got.png">
+<img src="./as-far-as-w.png">
 ## Features
 
 - **Achievement Tracking**: Track and visualize Baldur's Gate 3 achievements
