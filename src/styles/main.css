@@ -1,5 +1,9 @@
 /* Main CSS file - imports all styles */
 
+/* Import shared and responsive styles first */
+@import '@styles/shared.css';
+@import '@styles/responsive.css';
+
 /* Import component-specific styles */
 @import '@styles/achievements.css';
 @import '@styles/achievement-list.css';
@@ -62,19 +66,4 @@ body {
   background-color: var(--primary-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Mobile responsive design - global styles only */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-    padding: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    font-size: 13px;
-    padding: 0.25rem;
-  }
 }

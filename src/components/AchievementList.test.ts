@@ -44,7 +44,7 @@ describe('AchievementListComponent', () => {
 
       AchievementListComponent.renderAchievements(container, achievements);
 
-      expect(AchievementComponent.create).toHaveBeenCalledWith(achievements[0]);
+      expect(AchievementComponent.create).toHaveBeenCalledWith(achievements[0], false, expect.any(Function));
       expect(container.children.length).toBe(1);
     });
 
@@ -90,7 +90,7 @@ describe('AchievementListComponent', () => {
       AchievementListComponent.renderAchievements(container, achievements);
 
       expect(container.children.length).toBe(1);
-      expect(AchievementComponent.create).toHaveBeenCalledWith(achievements[0]);
+      expect(AchievementComponent.create).toHaveBeenCalledWith(achievements[0], false, expect.any(Function));
     });
   });
 

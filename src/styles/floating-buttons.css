@@ -1,0 +1,72 @@
+/* Floating Action Buttons */
+.floating-buttons {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1000;
+  pointer-events: none; /* Allow clicks to pass through the container */
+}
+
+.fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-color);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  pointer-events: auto; /* Re-enable clicks on the button */
+  position: relative;
+  overflow: hidden;
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  background: var(--accent-hover, #00a085);
+}
+
+.fab:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.fab svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.fab:hover svg {
+  transform: scale(1.1);
+}
+
+.fab-text {
+  position: absolute;
+  right: 70px;
+  background: var(--background-secondary);
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+}
+
+.fab:hover .fab-text {
+  opacity: 1;
+  transform: translateX(0);
+} 

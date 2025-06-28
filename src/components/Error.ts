@@ -10,19 +10,24 @@ export class ErrorComponent {
     const errorElement = document.createElement('div');
     errorElement.className = 'error-container';
 
-    errorElement.innerHTML = `
-      <h2>${title}</h2>
-      <p>${message}</p>
-      <button class="refresh-button">${buttonText}</button>
-    `;
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = title;
+
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+
+    const buttonElement = document.createElement('button');
+    buttonElement.className = 'refresh-button';
+    buttonElement.textContent = buttonText;
 
     // Add event listener for the button
-    const button = errorElement.querySelector('.refresh-button');
-    if (button) {
-      button.addEventListener('click', () => {
-        window.location.reload();
-      });
-    }
+    buttonElement.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    errorElement.appendChild(titleElement);
+    errorElement.appendChild(messageElement);
+    errorElement.appendChild(buttonElement);
 
     return errorElement;
   }

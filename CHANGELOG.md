@@ -14,6 +14,13 @@
 - Add scripts for creating a new alias (vite and ts)
 - Organize types
 
+- style alias
+- Button for jumping UI (floating action button)
+- `TestUtils`
+- DOM-ify components (no jsx as strings in ts files) - for consistency/convention.
+- User data/user profile
+
+
 ## June 26, 2025
 
 - Init project

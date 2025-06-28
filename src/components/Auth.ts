@@ -22,50 +22,96 @@ export class AuthComponent {
     this.element.innerHTML = '';
 
     if (state.loading) {
-      this.element.innerHTML = `
-        <div class="auth-loading">
-          <div class="spinner"></div>
-          <span>Loading...</span>
-        </div>
-      `;
+      const loadingContainer = document.createElement('div');
+      loadingContainer.className = 'auth-loading';
+
+      const spinner = document.createElement('div');
+      spinner.className = 'spinner';
+
+      const loadingText = document.createElement('span');
+      loadingText.textContent = 'Loading...';
+
+      loadingContainer.appendChild(spinner);
+      loadingContainer.appendChild(loadingText);
+      this.element.appendChild(loadingContainer);
       return;
     }
 
     if (state.error) {
-      this.element.innerHTML = `
-        <div class="auth-error">
-          <span>${state.error}</span>
-          <button id="retry-auth">Retry</button>
-        </div>
-      `;
-      this.element.querySelector('#retry-auth')?.addEventListener('click', () => this.retryAuth());
+      const errorContainer = document.createElement('div');
+      errorContainer.className = 'auth-error';
+
+      const errorText = document.createElement('span');
+      errorText.textContent = state.error;
+
+      const retryButton = document.createElement('button');
+      retryButton.id = 'retry-auth';
+      retryButton.textContent = 'Retry';
+      retryButton.addEventListener('click', () => this.retryAuth());
+
+      errorContainer.appendChild(errorText);
+      errorContainer.appendChild(retryButton);
+      this.element.appendChild(errorContainer);
       return;
     }
 
     if (state.isAuthenticated && state.user) {
-      this.element.innerHTML = `
-        <div class="auth-user">
-          <div class="user-info">
-            <img src="${state.user.avatar}" alt="${state.user.displayName}" class="user-avatar">
-            <div class="user-details">
-              <span class="user-name">${state.user.displayName}</span>
-              <a href="${state.user.profileUrl}" target="_blank" class="user-profile">View Profile</a>
-            </div>
-          </div>
-          <button id="logout-btn" class="logout-btn">Logout</button>
-        </div>
-      `;
-      this.element.querySelector('#logout-btn')?.addEventListener('click', () => this.logout());
+      const userContainer = document.createElement('div');
+      userContainer.className = 'auth-user';
+
+      const userInfo = document.createElement('div');
+      userInfo.className = 'user-info';
+
+      const userAvatar = document.createElement('img');
+      userAvatar.src = state.user.avatar;
+      userAvatar.alt = state.user.displayName;
+      userAvatar.className = 'user-avatar';
+
+      const userDetails = document.createElement('div');
+      userDetails.className = 'user-details';
+
+      const userName = document.createElement('span');
+      userName.className = 'user-name';
+      userName.textContent = state.user.displayName;
+
+      const userProfile = document.createElement('a');
+      userProfile.href = state.user.profileUrl;
+      userProfile.target = '_blank';
+      userProfile.className = 'user-profile';
+      userProfile.textContent = 'View Profile';
+
+      const logoutButton = document.createElement('button');
+      logoutButton.id = 'logout-btn';
+      logoutButton.className = 'logout-btn';
+      logoutButton.textContent = 'Logout';
+      logoutButton.addEventListener('click', () => this.logout());
+
+      userDetails.appendChild(userName);
+      userDetails.appendChild(userProfile);
+      userInfo.appendChild(userAvatar);
+      userInfo.appendChild(userDetails);
+      userContainer.appendChild(userInfo);
+      userContainer.appendChild(logoutButton);
+      this.element.appendChild(userContainer);
     } else {
-      this.element.innerHTML = `
-        <div class="auth-login">
-          <button id="steam-login-btn" class="steam-login-btn">
-            <img src="${steamLogo}" alt="Steam logo" class="steam-logo" />
-            Login with Steam
-          </button>
-        </div>
-      `;
-      this.element.querySelector('#steam-login-btn')?.addEventListener('click', () => this.login());
+      const loginContainer = document.createElement('div');
+      loginContainer.className = 'auth-login';
+
+      const steamLoginButton = document.createElement('button');
+      steamLoginButton.id = 'steam-login-btn';
+      steamLoginButton.className = 'steam-login-btn';
+
+      const steamLogoImg = document.createElement('img');
+      steamLogoImg.src = steamLogo;
+      steamLogoImg.alt = 'Steam logo';
+      steamLogoImg.className = 'steam-logo';
+
+      steamLoginButton.appendChild(steamLogoImg);
+      steamLoginButton.appendChild(document.createTextNode('Login with Steam'));
+      steamLoginButton.addEventListener('click', () => this.login());
+
+      loginContainer.appendChild(steamLoginButton);
+      this.element.appendChild(loginContainer);
     }
   }
 
@@ -90,4 +136,4 @@ export class AuthComponent {
       this.unsubscribe();
     }
   }
-}
+} 
