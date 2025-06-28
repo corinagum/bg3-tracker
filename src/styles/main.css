@@ -1,41 +1,53 @@
 /* Main CSS file - imports all styles */
 
 /* Import component-specific styles */
-@import './achievements.css';
-@import './icon.css';
+@import '@styles/achievements.css';
+@import '@styles/achievement-list.css';
+@import '@styles/user-profile.css';
+@import '@styles/icon.css';
 
 /* Global styles can be added here */
 :root {
   /* Dark theme (default) */
-  --primary-color: #242424;
-  --secondary-color: #3e3f42;
-  --secondary-hover: #515358;
-  --text-color: #f1f1f1;
-  --text-secondary: #ccc;
+  --accent-color: #00b894;
+  --accent-hover: #00a085;
   --background-color: #2d2e30;
+  --background-hover: #4a4b4e;
+  --background-primary: #2d2e30;
   --background-secondary: #3e3f42;
   --border-color: #4a4b4e;
+  --primary-color: #242424;
   --progress-bg: #2e2f31;
   --progress-bar: #0088ff;
   --progress-text: white;
+  --secondary-color: #3e3f42;
+  --secondary-hover: #515358;
   --shadow: rgba(0, 0, 0, 0.5);
+  --text-color: #f1f1f1;
+  --text-muted: #888;
+  --text-secondary: #ccc;
 }
 
 /* Light theme (when system prefers light) */
 @media (prefers-color-scheme: light) {
   :root {
-    --primary-color: #ffffff;
-    --secondary-color: #f5f5f5;
-    --secondary-hover: #e8e8e8;
-    --text-color: #333333;
-    --text-secondary: #666666;
+    --accent-color: #00b894;
+    --accent-hover: #00a085;
     --background-color: #ffffff;
+    --background-hover: #f0f0f0;
+    --background-primary: #ffffff;
     --background-secondary: #f8f8f8;
     --border-color: #e0e0e0;
+    --primary-color: #ffffff;
     --progress-bg: #f0f0f0;
     --progress-bar: #007acc;
     --progress-text: #333333;
+    --secondary-color: #f5f5f5;
+    --secondary-hover: #e8e8e8;
     --shadow: rgba(0, 0, 0, 0.1);
+    --text-color: #333333;
+    --text-muted: #999;
+    --text-secondary: #666666;
   }
 }
 

@@ -130,6 +130,6 @@ For detailed documentation on the Steam integration, see [STEAM_INTEGRATION.md](
 
 ## License
 
-[!WARNING]
+[!NOTE]
 This project is **not licensed for public use**.
 You may **not** copy, modify, distribute, or use this code in any form without explicit written permission from the author.

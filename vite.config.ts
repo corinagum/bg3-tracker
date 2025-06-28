@@ -20,6 +20,7 @@ export default defineConfig({
       '@components': resolve(__dirname, './src/components'),
       '@assets': resolve(__dirname, './src/assets'),
       '@data': resolve(__dirname, './src/data'),
+      '@styles': resolve(__dirname, './src/styles'),
     },
   },
   test: {
@@ -39,6 +40,7 @@ export default defineConfig({
         '**/*.d.ts',
         '**/types.{js,ts}',
         '**/scripts/**',
+        '**/test-user-data.ts',
       ],
       thresholds: {
         statements: 80,

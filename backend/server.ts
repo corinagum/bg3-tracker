@@ -1,8 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { setupAuth } from './auth.js';
-import { setupRoutes } from './routes.js';
+import { setupAuth } from './auth';
+import { setupRoutes } from './routes';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
